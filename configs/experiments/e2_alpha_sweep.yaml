@@ -1,0 +1,17 @@
+# E2 — The speedup/reliability tradeoff: sweep TESAR's alpha (the headline figure).
+# 5 alphas x 5 repetitions + 5 local baselines = 30 runs, about 8-12 minutes.
+name: e2_alpha_sweep
+cluster_profile: configs/cluster_profiles/hetero_faulty6.yaml
+repetitions: 5
+seed: 42
+timeout_s: 300
+local_baseline: true
+base_overrides:
+  - job.image_path=data/images/test_1024.png
+  - job.blur_iterations=6
+  - scheduler.policy=tesar
+  - liveness.ping_interval_s=0.5
+  - liveness.suspect_after_s=2
+  - liveness.dead_after_s=4
+matrix:
+  scheduler.alpha: [0.0, 0.25, 0.5, 0.75, 1.0]

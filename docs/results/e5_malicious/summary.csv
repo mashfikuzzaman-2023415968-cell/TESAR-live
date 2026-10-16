@@ -1,0 +1,6 @@
+point_id,runs,failed,correct_rate,makespan_s_mean,makespan_s_ci95,speedup_mean,speedup_ci95,wasted_work_s_mean,wasted_work_s_ci95,attempts_total_mean,attempts_total_ci95,replicas_mean,replicas_ci95,verifications_mean,verifications_ci95,verification_overhead_pct_mean,verification_overhead_pct_ci95,messages_sent_mean,messages_sent_ci95
+p00_base_prob-0.0,5,0,1.0,0.401,0.0756,0.1378,0.0224,0.1196,0.0259,105.2,7.1544,50.0,7.0786,31.8,3.4455,15.1166,2.0764,186.6,13.6752
+p01_base_prob-0.05,5,0,0.8,0.3918,0.1267,0.125,0.0343,0.1301,0.0773,105.4,14.4961,49.0,8.467,31.8,6.6519,13.6998,1.817,185.6,27.0272
+p02_base_prob-0.2,5,0,1.0,0.4205,0.1159,0.1176,0.0172,0.13,0.0624,108.2,15.0646,52.4,5.9935,35.8,4.3369,15.752,4.1252,195.6,18.3245
+p03_base_prob-0.5,5,0,1.0,0.4433,0.1453,0.1179,0.0246,0.1385,0.0685,104.0,13.4019,49.4,6.8348,40.4,1.4157,18.8168,3.7217,193.0,19.9247
+p04_base_prob-1.0,5,0,1.0,0.3903,0.0911,0.1132,0.0225,0.0995,0.0381,103.4,7.0568,47.6,4.7768,46.0,1.5207,20.4586,3.0159,195.6,12.1848

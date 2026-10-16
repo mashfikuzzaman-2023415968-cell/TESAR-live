@@ -1,0 +1,9 @@
+# Four identical workers: a control group with no heterogeneity and no faults.
+# Usage: python scripts/local_cluster.py configs/cluster_profiles/homogeneous4.yaml
+coordinator: "127.0.0.1:50010"
+lab_mode: false
+workers:
+  - {name: "phone-1", slots: 1, args: ["--device-class", "phone"]}
+  - {name: "phone-2", slots: 1, args: ["--device-class", "phone"]}
+  - {name: "phone-3", slots: 1, args: ["--device-class", "phone"]}
+  - {name: "phone-4", slots: 1, args: ["--device-class", "phone"]}

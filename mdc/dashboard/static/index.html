@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TESAR-Live dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1>TESAR-Live</h1>
+      <p id="address" class="muted">connecting…</p>
+    </div>
+    <dl class="status">
+      <div><dt>Job</dt><dd id="job-status">idle</dd></div>
+      <div><dt>Policy</dt><dd id="policy">–</dd></div>
+      <div><dt>α</dt><dd id="alpha">–</dd></div>
+      <div><dt>Elapsed</dt><dd id="elapsed">–</dd></div>
+    </dl>
+    <button id="logout" type="button" class="secondary">Log out</button>
+  </header>
+  <div class="progress" aria-label="tiles done"><div id="progress-bar"></div></div>
+
+  <main class="layout">
+    <section class="card tiles">
+      <h2>Tiles <span id="tile-count" class="muted"></span></h2>
+      <canvas id="grid" width="640" height="640" aria-label="tile grid"></canvas>
+      <ul id="legend" class="legend"></ul>
+      <div id="result" class="result" hidden>
+        <span id="result-badge" class="badge"></span>
+        <img id="output" alt="job output">
+      </div>
+    </section>
+
+    <section class="card workers">
+      <h2>Workers</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Class</th><th>State</th><th>Rep</th><th>λ</th>
+              <th>RTT ms</th><th>KB/s</th><th>Battery</th><th>Done/failed/wrong</th>
+              <th>Energy J (pred/meas)</th><th>In flight</th><th>Avg chunk</th><th id="controls-head" hidden>Demo</th>
+            </tr>
+          </thead>
+          <tbody id="workers"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card metrics">
+      <h2>Metrics</h2>
+      <dl id="metrics" class="kv"></dl>
+    </section>
+
+    <section class="card start">
+      <h2>Start a job</h2>
+      <form id="job-form">
+        <label>Policy
+          <select id="f-policy">
+            <option>tesar</option><option>fastest</option><option>most_reliable</option>
+            <option>round_robin</option><option>local</option>
+          </select>
+        </label>
+        <label>α <output id="f-alpha-out">0.5</output>
+          <input id="f-alpha" type="range" min="0" max="1" step="0.05" value="0.5">
+        </label>
+        <label>Image <select id="f-image"></select></label>
+        <label>Blur iterations <input id="f-iters" type="number" min="1" max="64" value="8"></label>
+        <label class="check"><input id="f-verify" type="checkbox" checked> Verification</label>
+        <label class="check"><input id="f-adaptive" type="checkbox" checked> Adaptive chunking</label>
+        <button type="submit">Start</button>
+        <p id="form-msg" class="muted"></p>
+      </form>
+    </section>
+
+    <section class="card events">
+      <h2>Events</h2>
+      <input id="filter" type="search" placeholder="filter events">
+      <ol id="events" class="events-list"></ol>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+build/
+
+# Run outputs and experiment results
+runs/
+dist/
+
+# Generated test images (only the small sample is committed)
+data/images/*.png
+!data/images/test_512.png
+
+# Secrets: NEVER commit these (spec S.10.5)
+.mdc/
+*.join
+runs/cluster_secrets/
+*.pem
+*.key
+admin_token
+devices.json
+
+# Promo video sources and renders (kept locally, not part of the code)
+brag-output/
+*.mp4
+*.mov
+*.wav
+*.srt

@@ -1,0 +1,131 @@
+# TESAR-Live default configuration (spec Section 5).
+# Every value here is a default; override with --config FILE or --set key=value.
+network:
+  coordinator_bind: "0.0.0.0"
+  tcp_port: 50010
+  discovery_port: 50000           # UDP port workers listen on for beacons
+  multicast_group: "239.255.77.77"
+  beacon_interval_s: 1.0
+  beacon_modes: ["broadcast", "multicast"]   # any subset
+  advertise_host: null            # null = auto-detect primary LAN IP
+  max_header_bytes: 16384
+  max_payload_bytes: 33554432     # 32 MiB (compressed, on the wire)
+  max_raw_array_bytes: 67108864   # 64 MiB after decompression (bomb guard)
+  max_connections: 64
+  max_connections_per_ip: 4
+  handshake_timeout_s: 5.0        # must finish TLS + auth within this
+  idle_read_timeout_s: 30.0       # after auth; pings keep it alive
+  compression: "zlib"             # "zlib" or "none" for task/result payloads
+  zlib_level: 1
+
+security:
+  tls: true                       # false only with --insecure-dev (loud warning, refused unless bound to 127.0.0.1)
+  state_dir: "~/.mdc"             # cert, key, devices.json, admin token; created with 0700, files 0600
+  cert_days: 825
+  auth_fail_limit: 5              # failures per IP within window ...
+  auth_fail_window_s: 60
+  auth_ban_s: 300                 # ... trigger a temporary ban
+  lab_mode: false                 # enables fault injection + demo CONTROL; never on in "production"
+  max_task_params:                # hard limits, enforced on BOTH sides
+    blur_radius: 5
+    blur_iterations: 64
+    chain_len: 5000000
+    max_tile_pixels: 4194304      # per chunk input
+  security_log: "security.jsonl"  # inside state_dir/logs
+
+liveness:
+  ping_interval_s: 1.0
+  suspect_after_s: 3.0            # no pong for this long -> SUSPECT
+  dead_after_s: 6.0               # no pong for this long -> DEAD, reassign
+  task_timeout_factor: 3.0        # timeout = factor * predicted_time + slack
+  task_timeout_slack_s: 2.0
+  task_timeout_min_s: 3.0
+  max_attempts_per_task: 6
+
+job:
+  type: "image"                   # "image" or "synthetic"
+  image_path: "data/images/test_2048.png"
+  base_tile: 128                  # base tile edge in pixels
+  blur_radius: 2
+  blur_iterations: 8              # compute intensity knob
+  edge_threshold: 64
+  synthetic_tasks: 64
+  synthetic_chain_len: 200000
+  output_dir: "runs/latest"
+
+workers:
+  default_slots: 1                # concurrent tasks per worker (can be overridden by HELLO)
+  prefetch: 1                     # extra queued tasks per worker to hide latency
+  min_battery_pct: 20             # do not assign to devices below this (unless charging)
+  local_worker: true              # spawn trusted local worker subprocess
+  local_slots: 1
+
+netest:
+  rtt_ewma_alpha: 0.3
+  bw_ewma_alpha: 0.3
+  probe_bytes: 262144             # active probe size at join
+  default_bw_bytes_per_s: 1000000
+  min_bw_bytes_per_s: 10000
+
+chunking:
+  adaptive: true
+  target_task_s: 2.0
+  max_chunk_tiles: 8
+  min_chunk_tiles: 1
+  loss_tolerance: 0.1             # keep P(chunk lost) <= this for flaky workers
+  fixed_chunk_tiles: 1            # used when adaptive=false
+
+reputation:
+  prior_success: 1.0
+  prior_failure: 1.0
+  decay: 0.98                     # multiply counts by this on each new event
+  weight_timeout: 1.0
+  weight_disconnect: 1.0
+  weight_error: 1.0
+  weight_wrong_result: 5.0
+  failure_rate_ewma_alpha: 0.2
+  default_failure_rate_per_s: 0.001
+
+energy:
+  enabled: true
+  p_compute_w_phone: 2.0
+  p_compute_w_laptop: 15.0
+  p_tx_w_phone: 1.2
+  p_tx_w_laptop: 2.0
+  battery_capacity_wh_phone: 15.0
+  battery_capacity_wh_laptop: 50.0
+  max_job_energy_pct: 5.0         # a device may spend at most this % of its battery on one job
+  nominal_voltage_v: 3.85
+  sample_interval_s: 2.0
+
+scheduler:
+  policy: "tesar"                 # local | round_robin | fastest | most_reliable | tesar
+  alpha: 0.5                      # 1.0 = pure speed, 0.0 = pure reliability
+  kappa: 10.0                     # scales reliability cost term
+  replication: true
+  reliability_target: 0.90        # replicate if best single-device reliability < this
+  max_replicas: 2
+  allow_local: true               # tesar/fastest may also use the local worker
+
+verification:
+  enabled: true
+  base_prob: 0.05
+  low_rep_boost: 0.5              # p = base + (1 - rep) * boost, capped at 1
+  probation_tasks: 3              # first N results of a new worker are always verified
+  strikes_to_quarantine: 2
+  prefer_local_verifier: true
+
+dashboard:
+  enabled: true
+  host: "127.0.0.1"               # localhost by default; exposing it requires login anyway
+  port: 8080
+  demo_controls: false            # requires security.lab_mode=true as well
+  session_ttl_s: 28800
+  login_rate_limit_per_min: 10
+
+logging:
+  level: "INFO"
+  events_file: "events.jsonl"     # written inside job.output_dir
+
+experiment:
+  seed: 42

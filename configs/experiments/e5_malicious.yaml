@@ -1,0 +1,15 @@
+# E5 — Malicious workers: detection latency, output correctness and verification overhead
+# as the spot-check probability grows (hetero_malicious6: 30 % and 5 % liars).
+# 5 probabilities x 5 repetitions = 25 runs, about 6-10 minutes.
+name: e5_malicious
+cluster_profile: configs/cluster_profiles/hetero_malicious6.yaml
+repetitions: 5
+seed: 42
+timeout_s: 300
+base_overrides:
+  - job.image_path=data/images/test_1024.png
+  - job.base_tile=64
+  - job.blur_iterations=2
+  - scheduler.policy=tesar
+matrix:
+  verification.base_prob: [0.0, 0.05, 0.2, 0.5, 1.0]

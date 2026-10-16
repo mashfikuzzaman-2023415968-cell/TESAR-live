@@ -1,0 +1,15 @@
+# E1 — Baselines: how do the five policies compare on a faulty heterogeneous cluster?
+# 5 policies x 5 repetitions = 25 runs, about 6-10 minutes on one laptop.
+name: e1_baselines
+cluster_profile: configs/cluster_profiles/hetero_faulty6.yaml
+repetitions: 5
+seed: 42
+timeout_s: 300
+base_overrides:
+  - job.image_path=data/images/test_1024.png
+  - job.blur_iterations=6
+  - liveness.ping_interval_s=0.5
+  - liveness.suspect_after_s=2
+  - liveness.dead_after_s=4
+matrix:
+  scheduler.policy: [local, round_robin, fastest, most_reliable, tesar]

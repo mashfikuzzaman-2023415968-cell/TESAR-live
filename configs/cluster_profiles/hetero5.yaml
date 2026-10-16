@@ -1,0 +1,13 @@
+# Five heterogeneous but well-behaved devices: different speeds, links and batteries.
+# Lab mode is needed only for the emulated slowness/network shaping (no failures).
+coordinator: "127.0.0.1:50010"
+lab_mode: true
+workers:
+  - {name: "fast-phone", slots: 1, args: ["--device-class", "phone", "--mock-battery-pct", "90"]}
+  - {name: "mid-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "1.5",
+                                         "--net-bw-kbps", "8000", "--net-delay-ms", "20"]}
+  - {name: "slow-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "3",
+                                          "--net-bw-kbps", "2000", "--net-delay-ms", "40"]}
+  - {name: "old-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "2",
+                                         "--mock-battery-pct", "35"]}
+  - {name: "laptop-b", slots: 2, args: ["--device-class", "laptop"]}

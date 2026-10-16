@@ -1,0 +1,4 @@
+point_id,runs,failed,correct_rate,makespan_s_mean,makespan_s_ci95,speedup_mean,speedup_ci95,wasted_work_s_mean,wasted_work_s_ci95,attempts_total_mean,attempts_total_ci95,replicas_mean,replicas_ci95,verifications_mean,verifications_ci95,verification_overhead_pct_mean,verification_overhead_pct_ci95,messages_sent_mean,messages_sent_ci95
+p00_alpha-0.25,3,0,1.0,0.1503,0.0642,0.3291,0.0808,0.0805,0.0133,19.0,2.4841,11.0,2.4841,6.0,0.0,13.225,4.1766,36.0,4.9683
+p01_alpha-0.5,3,0,1.0,0.1223,0.0915,0.3217,0.0544,0.0466,0.0604,19.0,2.4841,11.0,2.4841,6.0,0.0,19.088,14.189,36.0,4.9683
+p02_alpha-0.75,3,0,1.0,0.1191,0.0616,0.3206,0.0559,0.0582,0.0554,20.0,0.0,12.0,0.0,6.0,0.0,18.0437,9.0469,38.0,0.0

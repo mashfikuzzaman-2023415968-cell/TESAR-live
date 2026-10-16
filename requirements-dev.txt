@@ -1,0 +1,12 @@
+-r requirements.txt
+pytest
+pytest-asyncio
+pytest-cov
+pytest-timeout
+hypothesis
+ruff
+mypy
+types-PyYAML
+bandit
+pip-audit
+pip-tools

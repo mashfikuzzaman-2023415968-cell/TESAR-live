@@ -1,0 +1,14 @@
+# E7 — Online greedy vs offline MILP optimum. The runs only produce snapshot.json files;
+# experiments/plots.py solves the MILP on each (first 24 tiles) and plots the gap.
+# 3 alphas x 3 repetitions = 9 runs (about 3 minutes) + MILP solves (seconds each).
+name: e7_milp_small
+cluster_profile: configs/cluster_profiles/hetero5.yaml
+repetitions: 3
+seed: 42
+timeout_s: 120
+base_overrides:
+  - job.image_path=data/images/test_512.png
+  - job.blur_iterations=4
+  - scheduler.policy=tesar
+matrix:
+  scheduler.alpha: [0.25, 0.5, 0.75]

@@ -1,0 +1,13 @@
+# Six devices, two of them dishonest: one corrupts 30 % of its results, one only 5 %
+# (harder to catch). The scenario for verification and quarantine (Phase 10).
+coordinator: "127.0.0.1:50010"
+lab_mode: true
+workers:
+  - {name: "fast-phone", slots: 1, args: ["--device-class", "phone"]}
+  - {name: "mid-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "1.5"]}
+  - {name: "slow-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "3",
+                                          "--net-bw-kbps", "2000"]}
+  - {name: "laptop-b", slots: 2, args: ["--device-class", "laptop"]}
+  - {name: "bad-phone", slots: 1, args: ["--device-class", "phone", "--malicious-prob", "0.3"]}
+  - {name: "sneaky-phone", slots: 1, args: ["--device-class", "phone",
+                                            "--malicious-prob", "0.05"]}

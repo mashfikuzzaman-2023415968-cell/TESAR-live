@@ -1,0 +1,5 @@
+point_id,runs,failed,correct_rate,makespan_s_mean,makespan_s_ci95,speedup_mean,speedup_ci95,wasted_work_s_mean,wasted_work_s_ci95,attempts_total_mean,attempts_total_ci95,replicas_mean,replicas_ci95,verifications_mean,verifications_ci95,verification_overhead_pct_mean,verification_overhead_pct_ci95,messages_sent_mean,messages_sent_ci95
+p00_policy-fastest_adaptive-true,5,0,1.0,0.7026,0.1029,0.8665,0.1737,0.0,0.0,48.0,0.0,0.0,0.0,20.4,1.4157,27.6606,1.995,68.4,1.4157
+p01_policy-fastest_adaptive-false,5,0,1.0,0.7356,0.2642,0.634,0.1725,0.0,0.0,272.0,0.0,0.0,0.0,33.0,4.7281,7.259,1.3401,305.0,4.7281
+p02_policy-tesar_adaptive-true,5,0,1.0,1.1172,0.2263,0.6449,0.1735,0.5902,0.1353,84.4,6.7782,36.2,6.535,32.8,4.5112,24.9764,5.411,152.6,16.9249
+p03_policy-tesar_adaptive-false,5,0,1.0,0.76,0.1176,0.6148,0.2084,0.2219,0.1061,337.0,31.1531,64.4,31.5172,42.6,6.9467,7.906,1.338,439.0,62.331

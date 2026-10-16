@@ -1,0 +1,14 @@
+# Coordinator (laptop) runtime dependencies. Locked with hashes in requirements.lock.
+numpy
+Pillow
+aiohttp
+PyYAML
+matplotlib
+scipy
+cryptography
+# Optional: prints an ASCII QR code of a join code (`mdc.cli enroll --qr`).
+qrcode
+# Optional: offline MILP optimum for small instances (Phase 9, experiment E7).
+pulp
+# The MILP solver for pulp >= 4, which no longer bundles CBC (DECISIONS.md, Phase 9).
+highspy

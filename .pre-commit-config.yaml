@@ -1,0 +1,15 @@
+# Install with: pip install pre-commit && pre-commit install
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.10
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: check-forbidden
+        name: forbidden-pattern scan (no join codes, private keys, banned constructs)
+        entry: python scripts/check_forbidden.py
+        language: system
+        pass_filenames: false
+        always_run: true

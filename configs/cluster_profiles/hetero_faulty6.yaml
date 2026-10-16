@@ -1,0 +1,14 @@
+# Six heterogeneous devices, three of them unreliable: a flaky phone (disconnects and
+# drops), a dropper and a crasher. The scenario for failure recovery and reputation.
+coordinator: "127.0.0.1:50010"
+lab_mode: true
+workers:
+  - {name: "fast-phone", slots: 1, args: ["--device-class", "phone", "--mock-battery-pct", "90"]}
+  - {name: "slow-phone", slots: 1, args: ["--device-class", "phone", "--slowdown", "3",
+                                          "--net-bw-kbps", "2000", "--net-delay-ms", "40"]}
+  - {name: "flaky-phone", slots: 1, args: ["--device-class", "phone", "--flaky-mean-s", "20",
+                                           "--drop-prob", "0.05"]}
+  - {name: "dropper-phone", slots: 1, args: ["--device-class", "phone", "--drop-prob", "0.2"]}
+  - {name: "crasher-phone", slots: 1, args: ["--device-class", "phone", "--crash-after-s",
+                                             "15"]}
+  - {name: "laptop-b", slots: 2, args: ["--device-class", "laptop"]}

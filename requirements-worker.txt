@@ -1,0 +1,2 @@
+# Worker (phone/Termux) runtime dependencies: standard library + numpy ONLY.
+numpy

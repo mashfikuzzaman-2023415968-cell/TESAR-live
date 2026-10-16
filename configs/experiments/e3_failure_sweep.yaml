@@ -1,0 +1,17 @@
+# E3 — Robustness: makespan and wasted work as every worker drops more results.
+# 3 policies x 4 drop probabilities x 3 repetitions = 36 runs, about 12-20 minutes.
+name: e3_failure_sweep
+cluster_profile: configs/cluster_profiles/hetero5.yaml
+repetitions: 3
+seed: 42
+timeout_s: 300
+base_overrides:
+  - job.image_path=data/images/test_1024.png
+  - job.blur_iterations=4
+  - liveness.ping_interval_s=0.5
+  - liveness.suspect_after_s=2
+  - liveness.dead_after_s=4
+  - liveness.task_timeout_min_s=1
+matrix:
+  scheduler.policy: [round_robin, fastest, tesar]
+  cluster.drop_prob: [0.0, 0.1, 0.2, 0.3]

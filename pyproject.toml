@@ -1,0 +1,125 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tesar-live"
+version = "0.1.0"
+description = "Reliability-aware compute offloading for a mobile device cloud: real sockets, real phones, real failures"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mashfikuzzaman Taeen" }]
+dependencies = ["numpy"]
+
+[project.optional-dependencies]
+coordinator = [
+    "Pillow",
+    "aiohttp",
+    "PyYAML",
+    "matplotlib",
+    "scipy",
+    "cryptography",
+    "qrcode",
+    "pulp",
+]
+
+[tool.setuptools.packages.find]
+include = ["mdc*"]
+
+[tool.setuptools.package-data]
+"mdc.dashboard" = ["static/*"]
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--strict-markers -ra"
+# Default per-test timeout. e2e tests raise it with @pytest.mark.timeout(180);
+# the soak test disables it with @pytest.mark.timeout(0).
+timeout = 60
+markers = [
+    "property: hypothesis property-based and fuzz tests",
+    "integration: two real components over asyncio loopback sockets",
+    "e2e: coordinator + worker subprocesses running real jobs",
+    "security: tests for a control from Section S of the spec",
+    "perf: performance smoke tests (Phase 9+)",
+    "soak: long-running chaos soak test (Phase 14)",
+]
+filterwarnings = [
+    # Any warning raised from our own package is a bug.
+    "error:::mdc(\\..*)?",
+    # Leaked sockets/files/transports must fail the test that leaked them.
+    "error::ResourceWarning",
+    "error::pytest.PytestUnraisableExceptionWarning",
+    "error::pytest.PytestUnhandledThreadExceptionWarning",
+]
+
+# ---------------------------------------------------------------- coverage
+[tool.coverage.run]
+branch = true
+source = ["mdc"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["runs", "data", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "C4", "RUF", "ASYNC", "PL"]
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-branches = 15
+max-returns = 8
+max-statements = 60
+
+[tool.ruff.lint.per-file-ignores]
+# Tests: asserts are how pytest works (S101); literal numbers in assertions are
+# the expected values (PLR2004); tests spawn our own tools with fixed argv (S603).
+"tests/**" = ["S101", "PLR2004", "S603", "S108"]
+# Gate/tool scripts run our own fixed tool commands (argv lists, no shell,
+# timeouts) — see DECISIONS.md "ruff S603 in scripts".
+"scripts/**" = ["S603"]
+"experiments/**" = ["S603"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["mdc"]
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+files = ["mdc"]
+
+[[tool.mypy.overrides]]
+module = [
+    "mdc.common.*",
+    "mdc.tasks.*",
+    "mdc.coordinator.policies.*",
+    "mdc.coordinator.verifier",
+    "mdc.coordinator.enrollment",
+    "mdc.dashboard.auth",
+]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["pulp", "pulp.*", "qrcode", "qrcode.*", "scipy", "scipy.*"]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------- bandit
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "runs", "dist"]

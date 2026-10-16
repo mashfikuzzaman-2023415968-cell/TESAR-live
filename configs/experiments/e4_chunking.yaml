@@ -1,0 +1,15 @@
+# E4 — Adaptive vs fixed chunking under heterogeneous bandwidth (hetero5 has a 2 Mbit/s phone).
+# 2 policies x 2 chunking modes x 5 repetitions = 20 runs, about 5-8 minutes.
+name: e4_chunking
+cluster_profile: configs/cluster_profiles/hetero5.yaml
+repetitions: 5
+seed: 42
+timeout_s: 300
+base_overrides:
+  - job.image_path=data/images/test_2048.png
+  - job.blur_iterations=4
+  - chunking.target_task_s=0.2
+  - chunking.fixed_chunk_tiles=1
+matrix:
+  scheduler.policy: [fastest, tesar]
+  chunking.adaptive: [true, false]
